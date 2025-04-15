@@ -1,0 +1,3 @@
+template-file-path: templates/flask-app.yaml
+parameters: {}
+tags: {}
