@@ -4,7 +4,13 @@ Description: Basic EC2 deployment serving static site from GitHub subfolder usin
 Parameters:
   KeyPairName:
     Type: AWS::EC2::KeyPair::KeyName
+    Default: EC2CloudAppDeployment
     Description: "Your existing EC2 key pair name for SSH access"
+
+  AMIId:
+    Type: AWS::EC2::Image::Id
+    Default: ami-01ff9fc7721895c6b  # Amazon Linux 2023 (region-specific)
+    Description: "Amazon Linux 2023 AMI ID for your region"
 
 Resources:
   VPC:
@@ -68,7 +74,7 @@ Resources:
     Properties:
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
-      ImageId: ami-0c55b159cbfafe1f0  # Amazon Linux 2 (update if needed)
+      ImageId: !Ref AMIId
       SubnetId: !Ref Subnet
       SecurityGroupIds:
         - !Ref EC2SecurityGroup
@@ -78,12 +84,12 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          yum update -y
-          yum install -y httpd git
+          dnf update -y
+          dnf install -y httpd git
           systemctl start httpd
           systemctl enable httpd
           cd /var/www/html
-          git clone https://github.com/YOUR_USERNAME/ca2-poc.git
+          git clone https://github.com/X00229873/ca2-poc.git
           cp -r ca2-poc/app1/* .
           echo "<h2>Static site deployed from GitHub subfolder: app1</h2>" >> index.html
 
