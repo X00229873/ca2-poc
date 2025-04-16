@@ -86,13 +86,14 @@ Resources:
           #!/bin/bash
           exec > /var/log/user-data.log 2>&1
           set -x
+
           dnf update -y
-          dnf install -y python3 git python3-pip
+          dnf install -y python3 git
 
-          # Add delay to ensure pip3 is available and avoid race conditions
-          sleep 3
+          # Install pip separately
+          dnf install -y python3-pip
 
-          # Use absolute path to pip3 for reliability
+          # Install Flask with full path
           /usr/bin/pip3 install flask
 
           cd /home/ec2-user
