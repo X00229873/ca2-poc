@@ -88,12 +88,18 @@ Resources:
           set -x
           dnf update -y
           dnf install -y python3 git python3-pip
-          pip3 install flask
+
+          # Add delay to ensure pip3 is available and avoid race conditions
+          sleep 3
+
+          # Use absolute path to pip3 for reliability
+          /usr/bin/pip3 install flask
+
           cd /home/ec2-user
           git clone https://github.com/X00229873/ca2-poc.git
           cd ca2-poc/app2
           nohup python3 app.py --host=0.0.0.0 --port=80 &
-          
+
 Outputs:
   FlaskAppURL:
     Description: Public IP of the Flask app
