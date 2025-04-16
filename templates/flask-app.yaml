@@ -87,7 +87,7 @@ Resources:
           exec > /var/log/user-data.log 2>&1
           set -x
           dnf update -y
-          dnf install -y python3 git
+          dnf install -y python3 git python3-pip
           pip3 install flask
           cd /home/ec2-user
           git clone https://github.com/X00229873/ca2-poc.git
