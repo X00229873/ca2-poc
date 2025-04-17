@@ -89,17 +89,28 @@ Resources:
 
           dnf update -y
           dnf install -y python3 git
-
-          # Install pip separately
           dnf install -y python3-pip
 
-          # Install Flask with full path
           /usr/bin/pip3 install flask
 
           cd /home/ec2-user
-          git clone https://github.com/X00229873/ca2-poc.git
-          cd ca2-poc/app2
-          nohup python3 app.py --host=0.0.0.0 --port=80 &
+
+          # Clone or update the repo
+          if [ -d "ca2-poc/.git" ]; then
+            cd ca2-poc
+            git pull origin main
+          else
+            git clone https://github.com/X00229873/ca2-poc.git
+            cd ca2-poc
+          fi
+
+          cd app2
+
+          # Stop any existing Flask app
+          pkill -f "python3 app.py" || true
+
+          # Start the app and log output
+          nohup python3 app.py --host=0.0.0.0 --port=80 >> /home/ec2-user/dashboard.log 2>&1 &
 
 Outputs:
   FlaskAppURL:
