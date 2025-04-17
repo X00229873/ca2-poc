@@ -89,9 +89,9 @@ Resources:
           systemctl start httpd
           systemctl enable httpd
           cd /var/www/html
+          rm -rf /var/www/html/*
           git clone https://github.com/X00229873/ca2-poc.git
           cp -r ca2-poc/app1/* .
-          echo "<h2>Static site deployed from GitHub subfolder: app1</h2>" >> index.html
 
 Outputs:
   WebsiteURL:
