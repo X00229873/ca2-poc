@@ -93,7 +93,17 @@ Resources:
           git clone https://github.com/X00229873/ca2-poc.git
           cp -r ca2-poc/app1/* .
 
+  StaticSiteS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-${AWS::Region}-static-assets"
+      AccessControl: Private
+
 Outputs:
   WebsiteURL:
     Description: Public IP address of the EC2 instance (Apache Web Server)
     Value: !Sub "http://${EC2Instance.PublicIp}"
+
+  S3BucketName:
+    Description: Name of the S3 bucket for static site assets or backups
+    Value: !Ref StaticSiteS3Bucket
